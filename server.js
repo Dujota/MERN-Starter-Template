@@ -7,9 +7,11 @@ const app = express();
 
 // load env variables
 require('dotenv').config();
+
+// Database
 require('./config/database');
 
-
+// Middleware
 app.use(logger('dev'));
 app.use(express.json());
 
@@ -20,6 +22,10 @@ if(process.env.NODE_ENV === 'production'){
   app.use(express.static(path.join(__dirname, 'build')));
 }
 
+// API ROUTES
+app.use('/api/users', require('./routes/api/users'))
+
+// React App entry point ( Production only )
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
